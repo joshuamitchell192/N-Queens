@@ -1,6 +1,8 @@
 from random import random
 import numpy as np
 from random import randint
+import time
+
 
 class SimulatedAnnealing:
     ''''''
@@ -8,56 +10,68 @@ class SimulatedAnnealing:
         self.queens = queens
         self.n = n
         #print(self.queens)
-        while self.cost(self.queens, n) != 0:
-            self.anneal(self.queens, n)
+        self.printBoard(self.queens, n)
+        start = time.time()
+        self.anneal(self.queens, n)
+        end = time.time()
 
+        self.printBoard(self.queens, n)
+        print(end - start)
     def anneal(self, queens, n):
+
         currentCost = self.cost(self.queens, n)
         T = 1.0
-        T_min = 0.00001
+        T0 = 1.0
+        T_min = 0.0001
         alpha = 0.9
+
         while T > T_min:
             i = 1
-            print("T : ", T)
-            while i <= 100:
+            #print("Cost : ", self.cost(self.queens, n))
+            #print("T : ", T)
+            while i <= 400:
+
                 next = self.randomNeighbour(self.queens, n)
                 #print(next)
                 nextCost = self.cost(next, n)
                 #print(nextCost)
                 #("current: ", currentCost)
-                a = np.exp((nextCost - currentCost)/T)
-                print("a : ", a)
+                a = np.exp((currentCost - nextCost)/T)
+                #print("a : ", a)
                 if a > random():
                     self.queens = next
                     currentCost = nextCost
                     #print(currentCost)
                 '''else:
                     self.neighbourEval(self.queens, n)'''
+
                 i += 1
-            '''T = T*alpha'''
+
+            #T = T*alpha
             T0 = T
             T = alpha / (np.log(T + T0))
             #print(queens)
+
 
     def neighbourEval(self, queens, n):
 
         queensTemp = queens[:]
         minCost = 2000
-        #iterate through queens
+        # iterate through queens
         for i in range(n):
-            #iterate through rows
+            # iterate through rows
             for j in range(n):
-                #check if the queen is in the same position
+                # check if the queen is in the same position
                 if j == queens[i]:
                     j = j + 1
                 else:
-                    #move queen to the next row
+                    # move queen to the next row
                     queensTemp[i] = j
-                    #determine cost for current position
+                    # determine cost for current position
                     cost = self.cost(queensTemp, n)
 
                     if cost < minCost:
-                        #store the best position and its cost so far
+                        # store the best position and its cost so far
                         bestColumn = i
                         bestRow = j
                         minCost = cost
@@ -98,3 +112,18 @@ class SimulatedAnnealing:
                     if abs(queens[i] - queens[j]) == abs(i - j):
                         conflicts = conflicts + 1
         return int(conflicts)
+
+    def printBoard(self, queens, n):
+
+        for i in range(n):
+
+            print("|", end='')
+            for j in range(n):
+
+                if queens[j] == i:
+                    print(" x |", end='')
+
+                else:
+                    print("   |", end='')
+
+            print("\n")

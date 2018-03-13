@@ -6,11 +6,12 @@ class HillClimbing:
     def __init__(self, queens, n, iterations):
         self.queens = queens
         self.n = n
-        self.printBoard(queens, n)
+        self.printBoard(self.queens, n)
         for i in range(iterations):
             if self.cost(queens, n) != 0:
                 self.queens = self.neighbourEval(queens, n)
         print(queens)
+        self.printBoard(self.queens, n)
 
 
     def neighbourEval(self, queens, n):
@@ -42,7 +43,7 @@ class HillClimbing:
                             return queens
             queensTemp = queens[:]
         queens[bestColumn] = bestRow
-        print("Board: ", minCost)
+        #print("Board: ", minCost)
         #print(self.cost(queens, n))
 
     def cost(self, queens, n):
@@ -60,9 +61,16 @@ class HillClimbing:
         return int(conflicts)
 
     def printBoard(self, queens, n):
+
         for i in range(n):
+
+            print("|", end='')
             for j in range(n):
-                if queens[i] == j:
-                    print("x")
-                else: print(" ")
+
+                if queens[j] == i:
+                    print(" x |", end='')
+
+                else:
+                    print("   |", end='')
+
             print("\n")
