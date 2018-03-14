@@ -33,9 +33,9 @@ class Genetic:
         for p in range(populationSize):
             population.append([])
             population[p] = ([randint(0, n-1) for x in range(n)])
-
+            population.sort(key=operator.methodcaller('self.fitness'))
         # Order the population in terms of their fitness values
-        population.sort(key=operator.methodcaller('self.fitness'[population[p], n]))
+
 
         for p in range(populationSize):
             print(self.fitness(population[p], n))

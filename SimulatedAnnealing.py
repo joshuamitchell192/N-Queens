@@ -28,7 +28,11 @@ class SimulatedAnnealing:
 
             while T > T_min:
                 i = 1
-                print("Cost: ", currentCost)
+                if currentCost == 0:
+                    print('\r', "Cost: ", currentCost, end='\n', flush=True)
+                else:
+                    print('\r', "Cost: ", currentCost, end='', flush=True)
+
 
                 while i <= 100:
 
