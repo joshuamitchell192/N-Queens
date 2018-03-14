@@ -20,71 +20,33 @@ class SimulatedAnnealing:
     def anneal(self, queens, n):
 
         currentCost = self.cost(self.queens, n)
-        T = 1.0
-        T0 = 1.0
-        T_min = 0.0001
-        alpha = 0.9
+        while self.cost(self.queens, n) != 0:
+            T = 1.0
+            T0 = 1.0
+            T_min = 0.0001
+            alpha = 0.9
 
-        while T > T_min:
-            i = 1
-            #print("Cost : ", self.cost(self.queens, n))
-            #print("T : ", T)
-            while i <= 400:
+            while T > T_min:
+                i = 1
+                print("Cost: ", currentCost)
 
-                next = self.randomNeighbour(self.queens, n)
-                #print(next)
-                nextCost = self.cost(next, n)
-                #print(nextCost)
-                #("current: ", currentCost)
-                a = np.exp((currentCost - nextCost)/T)
-                #print("a : ", a)
-                if a > random():
-                    self.queens = next
-                    currentCost = nextCost
-                    #print(currentCost)
-                '''else:
-                    self.neighbourEval(self.queens, n)'''
+                while i <= 100:
 
-                i += 1
+                    next = self.randomNeighbour(self.queens, n)
 
-            #T = T*alpha
-            T0 = T
-            T = alpha / (np.log(T + T0))
-            #print(queens)
+                    nextCost = self.cost(next, n)
 
+                    a = np.exp((currentCost - nextCost)/T)
 
-    def neighbourEval(self, queens, n):
+                    if a > random():
+                        self.queens = next
+                        currentCost = nextCost
 
-        queensTemp = queens[:]
-        minCost = 2000
-        # iterate through queens
-        for i in range(n):
-            # iterate through rows
-            for j in range(n):
-                # check if the queen is in the same position
-                if j == queens[i]:
-                    j = j + 1
-                else:
-                    # move queen to the next row
-                    queensTemp[i] = j
-                    # determine cost for current position
-                    cost = self.cost(queensTemp, n)
+                    i += 1
 
-                    if cost < minCost:
-                        # store the best position and its cost so far
-                        bestColumn = i
-                        bestRow = j
-                        minCost = cost
-
-                        #print("Column: ", minCost)
-
-                        if minCost == 0:
-                            self.queens[bestColumn] = bestRow
-
-            queensTemp = queens[:]
-        self.queens[bestColumn] = bestRow
-        #print("Board: ", minCost)
-        #print(self.cost(queens, n))
+                T = T*alpha
+                '''T0 = T
+                T = alpha / (np.log(T + T0))'''
 
 
     def randomNeighbour(self, queens, n):

@@ -13,6 +13,7 @@ class RandomRestartHC:
         self.n = n
         self.iterations = iterations
         self.printBoard(self.queens, n)
+        start = time.time()
         while self.cost(self.queens, n) != 0:
 
             self.queens = list([randint(0, n - 1) for x in range(n)])
@@ -20,9 +21,10 @@ class RandomRestartHC:
             for i in range(self.iterations):
                 if self.cost(self.queens, n) != 0:
                     self.neighbourEval(self.queens, n)
-
+        end = time.time()
         print(self.queens)
         self.printBoard(self.queens, n)
+        print(start - end)
 
     def neighbourEval(self, queens, n):
 

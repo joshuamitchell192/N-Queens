@@ -5,6 +5,7 @@ from Genetic import Genetic
 import numpy as np
 import threading
 
+# TODO - Tournmaent
 
 from random import randint
 n = int(input("What is the number of queens: "))
@@ -16,7 +17,7 @@ algorithm = int(input("Select which algorithm you would like to use: "))
 
 queens = [randint(0, n-1) for x in range(n)]
 
-print(queens)
+#print(queens)
 
 if algorithm == 1:
 
@@ -32,6 +33,7 @@ elif algorithm == 3:
 
 elif algorithm == 4:
 
-    result = Genetic(queens, n)
+    result = Genetic(n)
+
 
 
