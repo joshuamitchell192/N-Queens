@@ -4,19 +4,21 @@ from SimulatedAnnealing import SimulatedAnnealing
 from Genetic import Genetic
 import numpy as np
 import threading
+# TODO - Comment Code
 
-# TODO - Tournmaent
+# Performance Improvements
+# TODO - Tournament Selection
+# TODO -
 
 from random import randint
 n = int(input("What is the number of queens: "))
 while n < 4 :
     print("Solution cannot be found for a number less than 4.\nEnter another number")
     n = int(input("What is the number of queens: "))
-print("\n1. Hill Climbing\n2. Random Restart Hill Climbing\n3. Simulated Annealing\n4. Genetic")
+print("\n1. Hill Climbing\n2. Random Restart Hill Climbing\n3. Simulated Annealing\n4. Genetic\n")
 algorithm = int(input("Select which algorithm you would like to use: "))
 
-queens = [randint(0, n-1) for x in range(n)]
-
+queens = list([randint(0, n - 1) for x in range(n)])
 #print(queens)
 
 if algorithm == 1:

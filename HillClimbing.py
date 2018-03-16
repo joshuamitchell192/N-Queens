@@ -1,3 +1,4 @@
+import time
 
 class HillClimbing:
     '''Explore the state space by selecting the immediate neighbour
@@ -7,11 +8,15 @@ class HillClimbing:
         self.queens = queens
         self.n = n
         self.printBoard(self.queens, n)
+        start = time.time()
         for i in range(iterations):
-            if self.cost(queens, n) != 0:
-                self.queens = self.neighbourEval(queens, n)
-        print(queens)
+            if self.cost(self.queens, n) != 0:
+                self.neighbourEval(self.queens, n)
+        end = time.time()
         self.printBoard(self.queens, n)
+        print("Runtime:", end - start, "(seconds)")
+        print(self.queens)
+
 
 
     def neighbourEval(self, queens, n):
@@ -38,12 +43,11 @@ class HillClimbing:
 
                         #print("Column: ", minCost)
 
-                        if minCost == 0:
-                            queens[bestColumn] = bestRow
-                            return queens
             queensTemp = queens[:]
         queens[bestColumn] = bestRow
-        #print("Board: ", minCost)
+
+
+        print("\r", "Cost:", minCost, end=' ', flush=True)
         #print(self.cost(queens, n))
 
     def cost(self, queens, n):
@@ -62,6 +66,7 @@ class HillClimbing:
 
     def printBoard(self, queens, n):
 
+        print("\n")
         for i in range(n):
 
             print("|", end='')

@@ -9,14 +9,13 @@ class SimulatedAnnealing:
     def __init__(self, queens, n):
         self.queens = queens
         self.n = n
-        #print(self.queens)
         self.printBoard(self.queens, n)
         start = time.time()
         self.anneal(self.queens, n)
         end = time.time()
 
         self.printBoard(self.queens, n)
-        print(end - start)
+        print("Runtime:", end - start, "(seconds)")
     def anneal(self, queens, n):
 
         currentCost = self.cost(self.queens, n)
@@ -28,7 +27,7 @@ class SimulatedAnnealing:
 
             while T > T_min:
                 i = 1
-                if currentCost == 0:
+                if currentCost == 0 and T <= T_min:
                     print('\r', "Cost: ", currentCost, end='\n', flush=True)
                 else:
                     print('\r', "Cost: ", currentCost, end='', flush=True)
@@ -81,6 +80,7 @@ class SimulatedAnnealing:
 
     def printBoard(self, queens, n):
 
+        print("\n")
         for i in range(n):
 
             print("|", end='')

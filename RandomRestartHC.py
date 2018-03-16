@@ -1,5 +1,4 @@
 from random import randint
-
 import time
 
 
@@ -13,18 +12,21 @@ class RandomRestartHC:
         self.n = n
         self.iterations = iterations
         self.printBoard(self.queens, n)
+        Attempts = 0
         start = time.time()
         while self.cost(self.queens, n) != 0:
-
+            Attempts += 1
             self.queens = list([randint(0, n - 1) for x in range(n)])
-            print(self.queens)
+
+
             for i in range(self.iterations):
                 if self.cost(self.queens, n) != 0:
                     self.neighbourEval(self.queens, n)
+            print(self.queens)
         end = time.time()
-        print(self.queens)
         self.printBoard(self.queens, n)
-        print(start - end)
+        print("Runtime:", end-start, "(seconds)")
+        print("Attempts:", Attempts)
 
     def neighbourEval(self, queens, n):
 
@@ -49,14 +51,9 @@ class RandomRestartHC:
                         bestRow = j
                         minCost = cost
 
-                        # print("Column: ", minCost)
-
-                        if minCost == 0:
-                            self.queens[bestColumn] = bestRow
-                            return queens
             queensTemp = queens[:]
         self.queens[bestColumn] = bestRow
-        print("Board: ", minCost)
+        print("\r", "Cost:", minCost, end=' ', flush=True)
         # print(self.cost(queens, n))
 
     def cost(self, queens, n):
@@ -77,6 +74,7 @@ class RandomRestartHC:
 
     def printBoard(self, queens, n):
 
+        print("\n")
         for i in range(n):
 
             print("|", end='')
@@ -89,3 +87,4 @@ class RandomRestartHC:
                     print("   |", end='')
 
             print("\n")
+
