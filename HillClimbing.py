@@ -1,18 +1,30 @@
 import time
 
 class HillClimbing:
-    '''Explore the state space by selecting the immediate neighbour
+    """Explore the state space by selecting the immediate neighbour
     with the minimal cost until no immediate neighbour improves the
-    current cost.'''
+    current cost."""
     def __init__(self, queens, n, iterations):
+
         self.queens = queens
         self.n = n
+
         self.printBoard(self.queens, n)
+
+        # start timer
         start = time.time()
+        # select a new best move for a certain number of iterations
         for i in range(iterations):
+            # if the cost != 0 then select another move
             if self.cost(self.queens, n) != 0:
                 self.neighbourEval(self.queens, n)
+            # if cost = 0, break for loop
+            else:
+                print("\r", "Cost:", 0, end=' ', flush=True)
+                break
         end = time.time()
+
+        # print board and other information
         self.printBoard(self.queens, n)
         print("Runtime:", end - start, "(seconds)")
         print(self.queens)
@@ -20,6 +32,7 @@ class HillClimbing:
 
 
     def neighbourEval(self, queens, n):
+        """find the best move for the current board state"""
         queensTemp = queens[:]
         minCost = 2000
         # iterate through queens
@@ -45,10 +58,7 @@ class HillClimbing:
 
             queensTemp = queens[:]
         queens[bestColumn] = bestRow
-
-
         print("\r", "Cost:", minCost, end=' ', flush=True)
-        #print(self.cost(queens, n))
 
     def cost(self, queens, n):
         conflicts = 0
@@ -56,10 +66,10 @@ class HillClimbing:
         for i in range(n):
             for j in range(i+1, n):
                 if i != j:
-                    #Horizontal axis
+                    # Horizontal axis
                     if queens[i] == queens[j]:
                         conflicts = conflicts + 1
-                    #Diagonal Axis Positive
+                    # Diagonal Axis Positive
                     if abs(queens[i] - queens[j]) == abs(i - j):
                         conflicts = conflicts + 1
         return int(conflicts)

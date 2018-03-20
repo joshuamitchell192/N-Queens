@@ -1,8 +1,10 @@
 from random import randint
 import time
+import matplotlib.pyplot as plt
+from multiprocessing import Pool
 
 
-class RandomRestartHC:
+class RandomRestartHCExperiment:
     '''Explore the state space by selecting the immediate neighbour
     with the minimal cost. If no neighbour improves the current cost,
     restart with a new random set of queen positions.'''
@@ -11,23 +13,54 @@ class RandomRestartHC:
         self.queens = queens
         self.n = n
         self.iterations = iterations
-        self.printBoard(self.queens, n)
+        #self.printBoard(self.queens, n)
 
-        Attempts = 0
-        start = time.time()
-        while self.cost(self.queens, n) != 0:
-            Attempts += 1
-            self.queens = list([randint(0, n - 1) for x in range(n)])
+        p = Pool()
+        r = p.apply_async(self.mainMeth, range(4, n + 1))
+        average = r.get()
+
+        p.close()
+        p.join()
+        '''runtimeStat = []
+        runtimeStat.append(average)'''
+        xaxis = [i for i in range(4, n + 1)]
+        plt.plot(xaxis, average, color='black', linestyle='dotted')
+        plt.xlabel('Number of Queens')
+        plt.ylabel('Runtime')
+        plt.title('Simulated Annealing')
+        plt.show()
+
+    def mainMeth(self, i):
+        runtime = []
 
 
-            for i in range(self.iterations):
-                if self.cost(self.queens, n) != 0:
-                    self.neighbourEval(self.queens, n)
-            print(self.queens)
-        end = time.time()
-        self.printBoard(self.queens, n)
-        print("Runtime:", end-start, "(seconds)")
-        print("Attempts:", Attempts)
+        sum = 0
+        average = 0
+        n = i
+        self.queens[:] = list([randint(0, n - 1) for x in range(n)])
+        for j in range(20):
+            Attempts = 0
+            start = time.time()
+            while self.cost(self.queens, n) != 0:
+                Attempts += 1
+                self.queens = list([randint(0, n - 1) for x in range(n)])
+
+                for x in range(self.iterations):
+                    if self.cost(self.queens, n) != 0:
+                        self.neighbourEval(self.queens, n)
+                print(self.queens)
+            end = time.time()
+            runtime.append((end - start))
+            # self.printBoard(self.queens, n)
+            # print("Runtime:", end - start, "(seconds)")
+            # print("Attempts:", Attempts)
+            self.queens[:] = list([randint(0, n - 1) for x in range(n)])
+        for x in range(len(runtime)):
+            sum += runtime[x]
+        average = sum / len(runtime)
+        print(average)
+
+        return average
 
     def neighbourEval(self, queens, n):
 
@@ -71,7 +104,6 @@ class RandomRestartHC:
                         conflicts = conflicts + 1
 
         return int(conflicts)
-
 
     def printBoard(self, queens, n):
 

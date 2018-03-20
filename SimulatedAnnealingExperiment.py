@@ -5,22 +5,43 @@ import matplotlib.pyplot as plt
 import time
 
 
-class SimulatedAnnealing:
+class SimulatedAnnealingExperiment:
     ''''''
     def __init__(self, queens, n):
 
         self.queens = queens
         self.n = n
-        # print initial board state
-        self.printBoard(self.queens, n)
-        # start timer
-        start = time.time()
-        self.anneal(n)
-        end = time.time()
-        self.printBoard(self.queens, n)
-        print("Runtime:", end - start, "(seconds)")
+        runtime = []
+        runtimeStat = []
+        iterations = 30
 
+        for i in range(4, iterations):
+            sum = 0
+            average = 0
+            n = i
+            self.queens[:] = list([randint(0, n - 1) for x in range(n)])
+            for j in range(20):
 
+                # print initial board state
+                #self.printBoard(self.queens, n)
+                # start timer
+                start = time.time()
+                self.anneal(n)
+                end = time.time()
+                runtime.append((end - start))
+                #self.printBoard(self.queens, n)
+                #print("Runtime:", end - start, "(seconds)")
+                self.queens[:] = list([randint(0, n - 1) for x in range(n)])
+            for x in range(len(runtime)):
+                sum += runtime[x]
+            average = sum / len(runtime)
+            runtimeStat.append(average)
+        xaxis = [i for i in range(4, iterations)]
+        plt.plot(xaxis, runtimeStat, color='black', linestyle='dashed')
+        plt.xlabel('Number of Queens')
+        plt.ylabel('Runtime')
+        plt.title('Simulated Annealing')
+        plt.show()
     def anneal(self, n):
 
         currentCost = self.cost(self.queens, n)

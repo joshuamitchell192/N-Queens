@@ -2,6 +2,8 @@ from HillClimbing import HillClimbing
 from RandomRestartHC import RandomRestartHC
 from SimulatedAnnealing import SimulatedAnnealing
 from Genetic import Genetic
+
+from RandomRestartHCExperiment import RandomRestartHCExperiment
 import numpy as np
 import threading
 # TODO - Comment Code
@@ -27,11 +29,11 @@ if algorithm == 1:
 
 elif algorithm == 2:
 
-    result = RandomRestartHC(queens, n, int(np.log(n**7)))
+    result = RandomRestartHCExperiment(queens, n, int(np.log(n**7)))
 
 elif algorithm == 3:
 
-    result = SimulatedAnnealing(queens, n)
+    result = SimulatedAnnealingExperiment(queens, n)
 
 elif algorithm == 4:
 

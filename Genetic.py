@@ -1,7 +1,9 @@
 from random import random
 import numpy as np
 from random import randint
+from random import randrange
 import time
+import matplotlib.pyplot as plt
 import operator
 
 class Genetic:
@@ -9,26 +11,34 @@ class Genetic:
 
         #self.queens = queens
         # TODO - create the starting population
+        runtimeStat = []
+
         self.n = n
-        start = time.time()
-        self.genetic(n)
-        end = time.time()
-        print(end - start)
+
+
+        for i in range(1):
+            start = time.time()
+            self.genetic(n)
+            end = time.time()
+            print("Runtime:", end - start, "(seconds)")
+            runtimeStat.append((end-start))
+        plt.plot(runtimeStat)
+        plt.show()
+
 
     def genetic(self, n):
-        populationSize = 200
-        cutoff = int(populationSize/4)
+        populationSize = 2*n
+        cutoff = int(populationSize/3)
+        mutationProbability = 80
 
-        mutations = 3
-
-        self.population = self.population(n, populationSize)
+        self.population = self.initPopulation(n, populationSize)
 
         self.sortPopulation(self.population, n, 0, populationSize)
         self.printBoard(self.population[0], n)
         generation = 1
         while self.fitness(self.population[0], n) != 0:
 
-            self.population = self.parentSelection(self.population, populationSize, cutoff, mutations)
+            self.population = self.parentSelection(self.population, populationSize, cutoff, mutationProbability)
             self.sortPopulation(self.population, n, 0, populationSize)
             print("\r", "Generation:", generation, " cost:", self.fitness(self.population[0], n), self.population[0], end="",flush=True)
             generation += 1
@@ -36,10 +46,40 @@ class Genetic:
         print("\r", "Generation:", generation, " cost:", self.fitness(self.population[0], n), self.population[0], end="", flush=True)
         self.printBoard(self.population[0], n)
 
-    def crossover(self, x, y, mutations):
+    def initPopulation(self, n, populationSize):
+        populationSize += 1
+        population = []
+
+        # produce the initial population
+        for p in range(populationSize):
+            population.append([])
+            population[p] = ([randint(0, n - 1) for x in range(n)])
+
+        return population
+
+    def parentSelection(self, population, populationSize, cutoff, mutationProbability):
+        x = []
+        y = []
+
+        newPopulation = []
+        for i in range(0, populationSize + 1):
+            #
+            p = randint(0, cutoff)
+            q = randint(0, cutoff)
+            while q == p:
+                q = randint(0, cutoff)
+            x = population[p]
+            y = population[q]
+            child = self.crossover(x, y, mutationProbability)
+            newPopulation.append(child)
+        population = newPopulation[:]
+
+        return population
+
+    def crossover(self, x, y, mutationProbability):
         child = []
         # select a random point to merge both configurations
-        crossOverPoint = randint(0, self.n-1)
+        crossOverPoint = int(self.n/2)
 
         for i in range(crossOverPoint):
 
@@ -50,52 +90,18 @@ class Genetic:
             child.append(y[i])
 
 
-        self.mutation(child, mutations)
+        self.mutation(child, mutationProbability)
 
         return child
 
-    def mutation(self, child, mutations):
-        mutationPosition = [randint(0, self.n-1) for i in range(mutations)]
-        for i in mutationPosition:
-
-            child[i] = randint(0, self.n-1)
+    def mutation(self, child, mutationProbability):
+        # TODO - mutate child using a probability
+        # mutationPosition = [randint(0, self.n-1) for i in range(mutations)]
+        if mutationProbability > randrange(0, 100):
+            i = randint(0, self.n - 1)
+            child[i] = randint(0, self.n - 1)
 
         return child
-
-    def parentSelection(self, population, populationSize, cutoff, mutations):
-        x = []
-        y = []
-
-        for i in reversed(range(cutoff, populationSize)):
-            del population[i]
-
-        for i in range(cutoff, populationSize):
-
-            x = population[randint(0, cutoff)]
-            y = population[randint(0, cutoff)]
-            child = self.crossover(x, y, mutations)
-            population.append(child)
-
-        return population
-
-
-
-
-    def population(self, n, populationSize):
-        populationSize += 1
-        population = []
-
-        # produce the initial population
-        for p in range(populationSize):
-            population.append([])
-            population[p] = ([randint(0, n-1) for x in range(n)])
-
-        '''for p in range(populationSize):
-            print(self.fitness(population[p], n))'''
-
-
-
-        return population
 
     def sortPopulation(self, population, n, low, high):
 
