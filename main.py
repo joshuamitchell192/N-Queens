@@ -39,7 +39,7 @@ elif algorithm == 3:
 
 elif algorithm == 4:
 
-    result = Genetic(n)
+    result = GeneticExperiment(n)
 
 
 

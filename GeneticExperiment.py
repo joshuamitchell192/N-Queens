@@ -11,22 +11,17 @@ class GeneticExperiment:
 
         #self.queens = queens
         # TODO - create the starting population
+        runtimeStat = []
+        average = 0
+        sum = 0
+        runtime = []
 
         self.n = n
-
-        runtime = []
-        runtimeStat = []
-        iterations = 10
-
-        for i in range(4, iterations):
-
-            sum = 0
-            average = 0
-            n = i
-
-            for i in range(20):
+        for i in range(4, self.n+1):
+            self.n = i
+            for j in range(20):
                 start = time.time()
-                self.genetic(n)
+                self.genetic(self.n)
                 end = time.time()
                 print("Runtime:", end - start, "(seconds)")
                 runtime.append((end-start))
@@ -34,16 +29,13 @@ class GeneticExperiment:
                 sum += runtime[x]
             average = sum / len(runtime)
             runtimeStat.append(average)
-        xaxis = [i for i in range(4, iterations)]
-        plt.plot(xaxis, runtimeStat, color='black', linestyle='dashed')
-        plt.xlabel('Number of Queens', fontsize=12)
-        plt.ylabel('Runtime', fontsize=12)
-        plt.title('Genetic Algorithm', fontsize=12)
+        xaxis = [i for i in range(4, self.n + 1)]
+        plt.plot(xaxis, runtimeStat, color='black', linestyle='-.')
         plt.show()
 
 
     def genetic(self, n):
-        populationSize = 2*n
+        populationSize = int(3*n/2)
         cutoff = int(populationSize/3)
         mutationProbability = 80
 
@@ -131,10 +123,6 @@ class GeneticExperiment:
 
 
         i = low - 1
-        print(high - 1)
-        print(len(population))
-
-
         pivot = self.fitness(population[high - 1], self.n)
         for j in range(low, high):
 

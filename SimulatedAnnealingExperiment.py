@@ -20,7 +20,7 @@ class SimulatedAnnealingExperiment:
             average = 0
             n = i
             self.queens[:] = list([randint(0, n - 1) for x in range(n)])
-            for j in range(20):
+            for j in range(1):
 
                 # print initial board state
                 #self.printBoard(self.queens, n)
@@ -37,7 +37,7 @@ class SimulatedAnnealingExperiment:
             average = sum / len(runtime)
             runtimeStat.append(average)
         xaxis = [i for i in range(4, iterations)]
-        plt.plot(xaxis, runtimeStat, color='black', linestyle='dashed')
+        plt.plot(xaxis, runtimeStat, color='orange', linestyle='dashed')
         plt.xlabel('Number of Queens')
         plt.ylabel('Runtime')
         plt.title('Simulated Annealing')
