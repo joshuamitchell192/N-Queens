@@ -6,28 +6,44 @@ import time
 import matplotlib.pyplot as plt
 import operator
 
-class Genetic:
+class GeneticExperiment:
     def __init__(self, n):
 
         #self.queens = queens
         # TODO - create the starting population
-        runtimeStat = []
 
         self.n = n
 
+        runtime = []
+        runtimeStat = []
+        iterations = 10
 
-        for i in range(1):
-            start = time.time()
-            self.genetic(n)
-            end = time.time()
-            print("Runtime:", end - start, "(seconds)")
-            runtimeStat.append((end-start))
-        plt.plot(runtimeStat)
+        for i in range(4, iterations):
+
+            sum = 0
+            average = 0
+            n = i
+
+            for i in range(20):
+                start = time.time()
+                self.genetic(n)
+                end = time.time()
+                print("Runtime:", end - start, "(seconds)")
+                runtime.append((end-start))
+            for x in range(len(runtime)):
+                sum += runtime[x]
+            average = sum / len(runtime)
+            runtimeStat.append(average)
+        xaxis = [i for i in range(4, iterations)]
+        plt.plot(xaxis, runtimeStat, color='black', linestyle='dashed')
+        plt.xlabel('Number of Queens', fontsize=12)
+        plt.ylabel('Runtime', fontsize=12)
+        plt.title('Genetic Algorithm', fontsize=12)
         plt.show()
 
 
     def genetic(self, n):
-        populationSize = int(3*n/2)
+        populationSize = 2*n
         cutoff = int(populationSize/3)
         mutationProbability = 80
 
@@ -115,6 +131,10 @@ class Genetic:
 
 
         i = low - 1
+        print(high - 1)
+        print(len(population))
+
+
         pivot = self.fitness(population[high - 1], self.n)
         for j in range(low, high):
 

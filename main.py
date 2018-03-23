@@ -4,8 +4,9 @@ from SimulatedAnnealing import SimulatedAnnealing
 from Genetic import Genetic
 
 from RandomRestartHCExperiment import RandomRestartHCExperiment
+from SimulatedAnnealingExperiment import SimulatedAnnealingExperiment
+from GeneticExperiment import GeneticExperiment
 import numpy as np
-import threading
 # TODO - Comment Code
 
 # Performance Improvements
@@ -14,6 +15,7 @@ import threading
 
 from random import randint
 n = int(input("What is the number of queens: "))
+
 while n < 4 :
     print("Solution cannot be found for a number less than 4.\nEnter another number")
     n = int(input("What is the number of queens: "))

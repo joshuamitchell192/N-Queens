@@ -14,20 +14,17 @@ class RandomRestartHCExperiment:
         self.n = n
         self.iterations = iterations
         #self.printBoard(self.queens, n)
+        average = []
+        for i in range(4, n + 1):
+            average.append(self.mainMeth(i))
 
-        p = Pool()
-        r = p.apply_async(self.mainMeth, range(4, n + 1))
-        average = r.get()
-
-        p.close()
-        p.join()
         '''runtimeStat = []
         runtimeStat.append(average)'''
         xaxis = [i for i in range(4, n + 1)]
         plt.plot(xaxis, average, color='black', linestyle='dotted')
         plt.xlabel('Number of Queens')
         plt.ylabel('Runtime')
-        plt.title('Simulated Annealing')
+        plt.title('Random Restart')
         plt.show()
 
     def mainMeth(self, i):
@@ -58,7 +55,8 @@ class RandomRestartHCExperiment:
         for x in range(len(runtime)):
             sum += runtime[x]
         average = sum / len(runtime)
-        print(average)
+
+
 
         return average
 

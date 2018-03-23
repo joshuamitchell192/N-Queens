@@ -50,7 +50,7 @@ class SimulatedAnnealing:
 
                     nextCost = self.cost(nextState, n)
 
-                    a = np.exp((currentCost - nextCost)/T)
+                    a = np.exp(-(nextCost - currentCost)/T)
 
                     if a > random():
                         self.queens = nextState
