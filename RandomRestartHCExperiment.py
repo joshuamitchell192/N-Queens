@@ -49,12 +49,13 @@ class RandomRestartHCExperiment:
             end = time.time()
             runtime.append((end - start))
             # self.printBoard(self.queens, n)
-            # print("Runtime:", end - start, "(seconds)")
+            print("Runtime:", end - start, "(seconds)")
             # print("Attempts:", Attempts)
             self.queens[:] = list([randint(0, n - 1) for x in range(n)])
         for x in range(len(runtime)):
             sum += runtime[x]
         average = sum / len(runtime)
+
 
 
 

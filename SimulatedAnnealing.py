@@ -6,7 +6,8 @@ import time
 
 
 class SimulatedAnnealing:
-    ''''''
+    """Find an optimal solution by decreasing the probability of selecting a random neighbour
+       as the temperature T decreases"""
     def __init__(self, queens, n):
 
         self.queens = queens
@@ -17,12 +18,13 @@ class SimulatedAnnealing:
         start = time.time()
         self.anneal(n)
         end = time.time()
+
+        # print board and runtime after solution is found
         self.printBoard(self.queens, n)
         print("Runtime:", end - start, "(seconds)")
 
 
     def anneal(self, n):
-
         currentCost = self.cost(self.queens, n)
 
         # Continue to search until a goal node is reached
@@ -46,26 +48,33 @@ class SimulatedAnnealing:
                 # Choose 100 random neighbours and apply the acceptance probability
                 while i <= 100:
 
+                    # Find random neighbour
                     nextState = self.randomNeighbour(self.queens, n)
-
+                    # Evaluate Cost of random neighbour
                     nextCost = self.cost(nextState, n)
-
+                    # Determine acceptance probabiltiy for given current state and random neighbour
                     a = np.exp(-(nextCost - currentCost)/T)
 
+                    # Select random neighbour if acceptance probability is greater than random value
                     if a > random():
                         self.queens = nextState
                         currentCost = nextCost
+                        if currentCost == 0:
+                            break
 
                     i += 1
 
+                if currentCost == 0:
+                    break
+
+                # Decrease temperature
                 T = T*alpha
-                '''T0 = T
-                T = alpha / (np.log(T + T0))'''
 
     def randomNeighbour(self, queens, n):
 
         queensTemp = queens[:]
 
+        # Select a random row and column for the random neighbour
         i = randint(0, n-1)
         j = randint(0, n-1)
 

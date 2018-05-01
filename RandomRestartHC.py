@@ -8,29 +8,45 @@ class RandomRestartHC:
     restart with a new random set of queen positions.'''
 
     def __init__(self, queens, n, iterations):
+
         self.queens = queens
         self.n = n
         self.iterations = iterations
         self.printBoard(self.queens, n)
 
         Attempts = 0
+        cost = 0
+        stat = []
         start = time.time()
+
+        # Restart and continue search until a solution is found
         while self.cost(self.queens, n) != 0:
+            # Increment Attempts to track number of restarts
             Attempts += 1
+
+            # Initialise queens to random state
             self.queens = list([randint(0, n - 1) for x in range(n)])
 
-
+            # Select new best moves and for a certain number of iterations
             for i in range(self.iterations):
-                if self.cost(self.queens, n) != 0:
+
+                # if the cost != 0 then select another move
+                cost = self.cost(self.queens, n)
+                stat.append(cost)
+
+                if cost != 0:
                     self.neighbourEval(self.queens, n)
+
             print(self.queens)
+        print('\n', stat)
         end = time.time()
+        # if cost = 0, print board and other information
         self.printBoard(self.queens, n)
         print("Runtime:", end-start, "(seconds)")
         print("Attempts:", Attempts)
 
     def neighbourEval(self, queens, n):
-
+        """find the best move for the current board state"""
         queensTemp = queens[:]
         minCost = 2000
         # iterate through queens
@@ -53,9 +69,9 @@ class RandomRestartHC:
                         minCost = cost
 
             queensTemp = queens[:]
+
         self.queens[bestColumn] = bestRow
         print("\r", "Cost:", minCost, end=' ', flush=True)
-        # print(self.cost(queens, n))
 
     def cost(self, queens, n):
         conflicts = 0
@@ -72,7 +88,7 @@ class RandomRestartHC:
 
         return int(conflicts)
 
-
+    # function that prints the board
     def printBoard(self, queens, n):
 
         print("\n")

@@ -1,3 +1,4 @@
+from __future__ import division
 from random import random
 import numpy as np
 from random import randint
@@ -15,6 +16,8 @@ class GeneticExperiment:
         average = 0
         sum = 0
         runtime = []
+        minimum = []
+        maximum = []
 
         self.n = n
         for i in range(4, self.n+1):
@@ -28,7 +31,10 @@ class GeneticExperiment:
             for x in range(len(runtime)):
                 sum += runtime[x]
             average = sum / len(runtime)
+            minimum.append(min(runtime))
+            maximum.append(max(runtime))
             runtimeStat.append(average)
+        print('\n', minimum, '\n', maximum)
         xaxis = [i for i in range(4, self.n + 1)]
         plt.plot(xaxis, runtimeStat, color='black', linestyle='-.')
         plt.show()

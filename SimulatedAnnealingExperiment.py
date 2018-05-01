@@ -1,3 +1,4 @@
+from __future__ import division
 from random import random
 import numpy as np
 from random import randint
@@ -11,16 +12,18 @@ class SimulatedAnnealingExperiment:
 
         self.queens = queens
         self.n = n
-        runtime = []
         runtimeStat = []
         iterations = 30
+        minimum = []
+        maximum = []
 
-        for i in range(4, iterations):
+        for i in range(0.5, 0.999, 0.05):
             sum = 0
             average = 0
-            n = i
+            alpha = i
+            runtime = []
             self.queens[:] = list([randint(0, n - 1) for x in range(n)])
-            for j in range(1):
+            for j in range(20):
 
                 # print initial board state
                 #self.printBoard(self.queens, n)
@@ -34,10 +37,16 @@ class SimulatedAnnealingExperiment:
                 self.queens[:] = list([randint(0, n - 1) for x in range(n)])
             for x in range(len(runtime)):
                 sum += runtime[x]
+            minimum.append(min(runtime))
+            maximum.append(max(runtime))
+
             average = sum / len(runtime)
+
             runtimeStat.append(average)
+        print('\n', minimum, '\n', maximum)
         xaxis = [i for i in range(4, iterations)]
-        plt.plot(xaxis, runtimeStat, color='orange', linestyle='dashed')
+        print(runtimeStat)
+        plt.plot(xaxis, runtimeStat, color='black', linestyle='dashed')
         plt.xlabel('Number of Queens')
         plt.ylabel('Runtime')
         plt.title('Simulated Annealing')
@@ -48,7 +57,7 @@ class SimulatedAnnealingExperiment:
 
         # Continue to search until a goal node is reached
         while self.cost(self.queens, n) != 0:
-
+            k = 0
             T = 1.0
             T0 = 1.0
             T_min = 0.0001
@@ -76,10 +85,18 @@ class SimulatedAnnealingExperiment:
                     if a > random():
                         self.queens = nextState
                         currentCost = nextCost
-
+                        if currentCost == 0:
+                            break
                     i += 1
+                if currentCost == 0:
+                    break
 
                 T = T*alpha
+                #T = 1 / np.log(k + 1)
+                #T = alpha**k
+                #T = 1 / (1 + alpha*k**2)
+                k += 1
+                #print(T)
                 '''T0 = T
                 T = alpha / (np.log(T + T0))'''
 
@@ -87,8 +104,9 @@ class SimulatedAnnealingExperiment:
 
         queensTemp = queens[:]
 
-        i = randint(0, n-1)
-        j = randint(0, n-1)
+        # Select a random row and column for the random neighbour
+        i = randint(0, n - 1)
+        j = randint(0, n - 1)
 
         queensTemp[i] = j
 

@@ -9,30 +9,26 @@ import operator
 class Genetic:
     def __init__(self, n):
 
-        #self.queens = queens
-        # TODO - create the starting population
-        runtimeStat = []
 
+
+        # run genetic algorithm
         self.n = n
+        start = time.time()
+        self.genetic(n)
+        end = time.time()
+        runtime = (end-start)
 
-
-        for i in range(1):
-            start = time.time()
-            self.genetic(n)
-            end = time.time()
-            print("Runtime:", end - start, "(seconds)")
-            runtimeStat.append((end-start))
-        plt.plot(runtimeStat)
-        plt.show()
-
+        print("Runtime:", end - start, "(seconds)")
 
     def genetic(self, n):
-        populationSize = int(3*n/2)
+        # Initialise algorithm parameters
+        populationSize = int(15*n/10)
+        # The point within the population where
         cutoff = int(populationSize/3)
-        mutationProbability = 80
+        mutationProbability = 75
 
         self.population = self.initPopulation(n, populationSize)
-
+        print(self.population)
         self.sortPopulation(self.population, n, 0, populationSize)
         self.printBoard(self.population[0], n)
         generation = 1
@@ -62,15 +58,20 @@ class Genetic:
         y = []
 
         newPopulation = []
+        # create a new population from the parents
         for i in range(0, populationSize + 1):
-            #
+            # randomly select parents
             p = randint(0, cutoff)
             q = randint(0, cutoff)
+            # check that parents are not the same
             while q == p:
                 q = randint(0, cutoff)
+
             x = population[p]
             y = population[q]
+            # create child from parents
             child = self.crossover(x, y, mutationProbability)
+            # add child to population
             newPopulation.append(child)
         population = newPopulation[:]
 

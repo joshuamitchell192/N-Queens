@@ -3,6 +3,7 @@ from RandomRestartHC import RandomRestartHC
 from SimulatedAnnealing import SimulatedAnnealing
 from Genetic import Genetic
 
+from HillClimbingExperiment import HillClimbingExperiment
 from RandomRestartHCExperiment import RandomRestartHCExperiment
 from SimulatedAnnealingExperiment import SimulatedAnnealingExperiment
 from GeneticExperiment import GeneticExperiment
@@ -27,19 +28,19 @@ queens = list([randint(0, n - 1) for x in range(n)])
 
 if algorithm == 1:
 
-    result = HillClimbing(queens, n, 200)
+    result = HillClimbing(queens, n, 30)
 
 elif algorithm == 2:
 
-    result = RandomRestartHCExperiment(queens, n, int(np.log(n**7)))
+    result = RandomRestartHC(queens, n, int(np.log(n**7)))
 
 elif algorithm == 3:
 
-    result = SimulatedAnnealingExperiment(queens, n)
+    result = SimulatedAnnealing(queens, n)
 
 elif algorithm == 4:
 
-    result = GeneticExperiment(n)
+    result = Genetic(n)
 
 
 

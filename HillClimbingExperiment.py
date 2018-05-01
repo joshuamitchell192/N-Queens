@@ -1,35 +1,52 @@
 import time
+from random import randint
+import matplotlib.pyplot as plt
 
-class HillClimbing:
+
+class HillClimbingExperiment:
     """Explore the state space by selecting the immediate neighbour
     with the minimal cost until no immediate neighbour improves the
     current cost."""
+
     def __init__(self, queens, n, iterations):
 
         self.queens = queens
-        self.n = n
 
-        self.printBoard(self.queens, n)
-        # start timer
-        start = time.time()
-        # select a new best move for a certain number of iterations
-        for i in range(iterations):
-            # if the cost != 0 then select another move
-            if self.cost(self.queens, n) != 0:
-                self.neighbourEval(self.queens, n)
-            # if cost = 0, break for loop
-            else:
-                print("\r", "Cost:", 0, end=' ', flush=True)
-                break
-        end = time.time()
+        successRate = []
+        #self.printBoard(self.queens, n)
+        for y in range(4, 30):
+            count = 0
+            self.n = y
+            for x in range(100):
+                self.queens[:] = list([randint(0, n - 1) for x in range(n+1)])
+                # start timer
+                start = time.time()
+                # select a new best move for a certain number of iterations
+                for i in range(iterations):
+                    # if the cost != 0 then select another move
+                    if self.cost(self.queens, self.n) != 0:
+                        self.neighbourEval(self.queens, self.n)
+                    # if cost = 0, break for loop
+                    else:
+                        print("\r", "Cost:", 0, end=' ', flush=True)
+                        count += 1
+                        print(count, self.n)
+                        break
+                end = time.time()
+            successRate.append(count/100)
+        print('\n', successRate)
+        '''xaxis = [i for i in range(4, 20)]
+        plt.hist(successRate, 20, facecolor='blue')
 
+        plt.xlabel('Number of Queens')
+        plt.ylabel('Success Rate')
+        plt.title('Hill Climbing Rate of Success')
+        plt.show()
 
         # print board and other information
-        self.printBoard(self.queens, n)
+        #self.printBoard(self.queens, n)
         print("Runtime:", end - start, "(seconds)")
-        print(self.queens)
-
-
+        #print(self.queens)'''
 
     def neighbourEval(self, queens, n):
         """find the best move for the current board state"""
@@ -43,18 +60,18 @@ class HillClimbing:
                 if j == queens[i]:
                     j = j + 1
                 else:
-                    #move queen to the next row
+                    # move queen to the next row
                     queensTemp[i] = j
-                    #determine cost for current position
+                    # determine cost for current position
                     cost = self.cost(queensTemp, n)
 
                     if cost < minCost:
-                        #store the best position and its cost so far
+                        # store the best position and its cost so far
                         bestColumn = i
                         bestRow = j
                         minCost = cost
 
-                        #print("Column: ", minCost)
+                        # print("Column: ", minCost)
 
             queensTemp = queens[:]
         queens[bestColumn] = bestRow
@@ -63,8 +80,8 @@ class HillClimbing:
     def cost(self, queens, n):
         conflicts = 0
 
-        for i in range(n):
-            for j in range(i+1, n):
+        for i in range(self.n):
+            for j in range(i + 1, self.n):
                 if i != j:
                     # Horizontal axis
                     if queens[i] == queens[j]:
@@ -74,7 +91,6 @@ class HillClimbing:
                         conflicts = conflicts + 1
         return int(conflicts)
 
-    # function that prints board
     def printBoard(self, queens, n):
 
         print("\n")
