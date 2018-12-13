@@ -74,6 +74,10 @@ class RandomRestartHC:
         print("\r", "Cost:", minCost, end=' ', flush=True)
 
     def cost(self, queens, n):
+        """
+        Calculates the cost by counting the number of queen conflicts
+        """
+
         conflicts = 0
 
         for i in range(n):
@@ -88,9 +92,11 @@ class RandomRestartHC:
 
         return int(conflicts)
 
-    # function that prints the board
-    def printBoard(self, queens, n):
 
+    def printBoard(self, queens, n):
+        """
+        Prints out the board with the queens array.
+        """
         print("\n")
         for i in range(n):
 

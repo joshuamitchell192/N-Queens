@@ -6,8 +6,11 @@ import time
 
 
 class SimulatedAnnealing:
-    """Find an optimal solution by decreasing the probability of selecting a random neighbour
-       as the temperature T decreases"""
+    """
+    Find an optimal solution by decreasing the probability of selecting a random neighbour
+    as the temperature T decreases
+       
+    """
     def __init__(self, queens, n):
 
         self.queens = queens
@@ -83,6 +86,10 @@ class SimulatedAnnealing:
         return queensTemp[:]
 
     def cost(self, queens, n):
+        """
+        Calculates the cost by counting the number of queen conflicts
+        """
+        
         conflicts = 0
 
         for i in range(n):

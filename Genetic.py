@@ -127,6 +127,10 @@ class Genetic:
         return i + 1
 
     def fitness(self, queens, n):
+        """
+        Calculates the cost/fitness by counting the number of queen conflicts
+        """
+
         conflicts = 0
 
         for i in range(n):
@@ -140,8 +144,11 @@ class Genetic:
                         conflicts = conflicts + 1
         return int(conflicts)
 
-    def printBoard(self, queens, n):
 
+    def printBoard(self, queens, n):
+        """
+        Prints out the board with the queens array.
+        """
         print("\n")
         for i in range(n):
 

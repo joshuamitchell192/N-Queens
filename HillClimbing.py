@@ -1,9 +1,12 @@
 import time
 
 class HillClimbing:
-    """Explore the state space by selecting the immediate neighbour
+    """
+    Explore the state space by selecting the immediate neighbour
     with the minimal cost until no immediate neighbour improves the
-    current cost."""
+    current cost.
+    """
+
     def __init__(self, queens, n, iterations):
 
         self.queens = queens
@@ -61,6 +64,9 @@ class HillClimbing:
         print("\r", "Cost:", minCost, end=' ', flush=True)
 
     def cost(self, queens, n):
+        """
+        Calculates the cost by counting the number of queen conflicts
+        """
         conflicts = 0
 
         for i in range(n):
@@ -74,9 +80,12 @@ class HillClimbing:
                         conflicts = conflicts + 1
         return int(conflicts)
 
-    # function that prints board
+
     def printBoard(self, queens, n):
 
+        """
+        Prints out the board with the queens array.
+        """
         print("\n")
         for i in range(n):
 
